@@ -1,110 +1,122 @@
-// Simon UI lives here - forced build trigger
+import { useState } from 'react';
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+}
 
-export default function Simon() {
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
+export default function SimonPage() {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const router = useRouter();
 
-  useEffect(() => {
-    const adminFlag = router.query.admin === "true";
-    setIsAdmin(adminFlag);
-  }, [router.query]);
-
-  const handleSend = async () => {
+  const sendMessage = async () => {
     if (!input.trim()) return;
-const systemPrompt = {
-  role: "system",
-  content:
-    "You are Simon — the world’s most compassionate and thoughtful grief counselor AI. You never give medical advice. You help users process grief, loss, trauma, and existential questions.",
-};
 
-const baseMessages = messages.length ? messages : [systemPrompt];
-const updatedMessages = [...baseMessages, { role: "user", content: input }];
-
-    setMessages(updatedMessages);
-    setInput("");
+    const newMessages = [...messages, { role: 'user', content: input }];
+    setMessages(newMessages);
+    setInput('');
     setLoading(true);
 
     try {
-      const res = await fetch("/api/simon", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: updatedMessages }),
+      const res = await fetch('/api/simon', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: newMessages }),
       });
 
       const data = await res.json();
-      const reply = data.reply || "Simon didn't respond.";
-setMessages([...updatedMessages, { role: "assistant", content: reply }]);
-
+      if (data.reply) {
+        setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
+      }
     } catch (error) {
-      console.error("Simon failed:", error);
-      setMessages([...updatedMessages, { role: "assistant", content: "Something went wrong." }]);
+      setMessages([...newMessages, { role: 'assistant', content: '⚠️ Simon is unavailable right now.' }]);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: "2rem auto", fontFamily: "sans-serif" }}>
-      <h1>Talk to Simon</h1>
-
-      <div style={{ whiteSpace: "pre-wrap", marginBottom: "1rem" }}>
-        {messages.map((msg, index) => (
-          <div key={index} style={{ marginBottom: "1rem" }}>
-            <strong>{msg.role === "user" ? "You" : "Simon"}:</strong> {msg.content}
-          </div>
-        ))}
-        {loading && <p>Simon is thinking...</p>}
-      </div>
-
-      <textarea
-        rows={4}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        style={{ width: "100%", padding: "1rem", fontSize: "1rem" }}
-        placeholder="Tell Simon what you're feeling..."
-      />
-
-      <button
-        onClick={handleSend}
-        style={{ marginTop: "1rem", padding: "0.5rem 1rem", fontSize: "1rem" }}
-      >
-        Send
-      </button>
-
-      {isAdmin && (
-        <div
-          style={{
-            background: "#f0f0f0",
-            padding: "1rem",
-            marginTop: "2rem",
-            fontSize: "0.85rem",
-            borderRadius: "8px",
-            position: "relative",
-          }}
-        >
-          <strong>🔧 Admin Debug Log:</strong>
-          <button
-            onClick={() => navigator.clipboard.writeText(JSON.stringify(messages, null, 2))}
+    <div style={{
+      backgroundColor: '#1E1E1E',
+      color: '#FFFFFF',
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      fontFamily: 'sans-serif'
+    }}>
+      <div style={{
+        flex: 1,
+        padding: '20px',
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px'
+      }}>
+        {messages.map((msg, idx) => (
+          <div
+            key={idx}
             style={{
-              position: "absolute",
-              top: "1rem",
-              right: "1rem",
-              padding: "0.25rem 0.5rem",
-              fontSize: "0.75rem",
-              cursor: "pointer",
+              alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
+              backgroundColor: msg.role === 'user' ? '#333' : '#2196F3',
+              color: '#fff',
+              padding: '12px 16px',
+              borderRadius: '16px',
+              maxWidth: '70%',
+              whiteSpace: 'pre-wrap'
             }}
           >
-            Copy
-          </button>
-          <pre style={{ marginTop: "1.5rem" }}>{JSON.stringify(messages, null, 2)}</pre>
-        </div>
-      )}
+            {msg.content}
+          </div>
+        ))}
+        {loading && (
+          <div style={{
+            backgroundColor: '#2196F3',
+            color: '#fff',
+            padding: '12px 16px',
+            borderRadius: '16px',
+            maxWidth: '70%'
+          }}>
+            Simon is typing...
+          </div>
+        )}
+      </div>
+
+      <div style={{
+        padding: '16px',
+        borderTop: '1px solid #333',
+        display: 'flex',
+        backgroundColor: '#1E1E1E'
+      }}>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+          placeholder="Type your message..."
+          style={{
+            flex: 1,
+            padding: '12px',
+            borderRadius: '8px',
+            border: '1px solid #555',
+            backgroundColor: '#2A2A2A',
+            color: '#fff',
+            marginRight: '8px'
+          }}
+        />
+        <button
+          onClick={sendMessage}
+          style={{
+            backgroundColor: '#2196F3',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '12px 20px',
+            cursor: 'pointer'
+          }}
+        >
+          Send
+        </button>
+      </div>
     </div>
   );
 }
