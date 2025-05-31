@@ -13,7 +13,8 @@ export default function SimonPage() {
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    const newMessages = [...messages, { role: 'user', content: input }];
+    const newMessages: Message[] = [...messages, { role: 'user' as const, content: input }];
+
     setMessages(newMessages);
     setInput('');
     setLoading(true);
