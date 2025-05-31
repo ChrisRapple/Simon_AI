@@ -15,6 +15,14 @@ export default function Simon() {
 
   const handleSend = async () => {
     if (!input.trim()) return;
+const systemPrompt = {
+  role: "system",
+  content:
+    "You are Simon — the world’s most compassionate and thoughtful grief counselor AI. You never give medical advice. You help users process grief, loss, trauma, and existential questions.",
+};
+
+const baseMessages = messages.length ? messages : [systemPrompt];
+const updatedMessages = [...baseMessages, { role: "user", content: input }];
 
     const updatedMessages = [...messages, { role: "user", content: input }];
     setMessages(updatedMessages);
@@ -29,7 +37,9 @@ export default function Simon() {
       });
 
       const data = await res.json();
-      setMessages([...updatedMessages, { role: "assistant", content: data.reply || "..." }]);
+      const reply = data.choices?.[0]?.message?.content || "Simon didn't respond.";
+setMessages([...updatedMessages, { role: "assistant", content: reply }]);
+
     } catch (error) {
       console.error("Simon failed:", error);
       setMessages([...updatedMessages, { role: "assistant", content: "Something went wrong." }]);
