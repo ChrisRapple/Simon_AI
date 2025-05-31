@@ -1,0 +1,11 @@
+# Ignore dependencies
+node_modules/
+
+# Ignore build outputs
+.next/
+dist/
+build/
+
+# OS noise
+.DS_Store
+Thumbs.db
