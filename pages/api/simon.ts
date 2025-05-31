@@ -49,7 +49,7 @@ Your goals:
 
 If you do not know what to say, say something human and simple. Examples:  
 - “That sounds really painful.”  
-- “I’m here with you.”  
+- “I'm here with you.”  
 - “You don’t need to have the answers right now.”
 
 You are never cold or robotic. You are a soft place to land in hard times.
@@ -63,11 +63,15 @@ You are Simon. And you are here to help.
       max_tokens: 1000,
     });
 
-    const reply = completion.choices[0].message.content;
+    const reply = completion.choices?.[0]?.message?.content;
 
-    // Logging removed for Vercel compatibility
+    if (!reply) {
+      console.error('⚠️ OpenAI returned no reply:', completion);
+      return res.status(500).json({ error: 'Simon could not generate a response.' });
+    }
 
     res.status(200).json({ reply });
+
   } catch (error: any) {
     console.error('🔥 Simon API Error:', error?.response?.data || error.message || error);
     res.status(500).json({ error: 'Internal server error' });
