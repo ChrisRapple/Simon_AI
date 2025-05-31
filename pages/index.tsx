@@ -4,16 +4,17 @@ export default function Home() {
       backgroundColor: "#1E1E1E",
       color: "#FFFFFF",
       height: "100vh",
+      overflow: "hidden", // Prevent scrolling
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
       fontFamily: "sans-serif",
       textAlign: "center",
-      padding: "20px"
+      padding: "20px",
     }}>
       <img
-        src="/logo.png" // Assuming you'll drop your logo here
+        src="/logo.png"
         alt="LegacyMind.ai Logo"
         style={{ width: "200px", marginBottom: "30px" }}
       />
