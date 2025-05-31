@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { OpenAI } from 'openai';
-import fs from 'fs';
-import path from 'path';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -67,25 +65,8 @@ You are Simon. And you are here to help.
 
     const reply = completion.choices[0].message.content;
 
-    // Optional: Log confidentially
-    const logEntry = {
-      timestamp: new Date().toISOString(),
-      user: messages[messages.length - 1]?.content || "[No user input]",
-      simon: reply,
-    };
-
-    const logFilePath = path.resolve(process.cwd(), 'logs', 'simon-session-log.json');
-    let existingLogs = [];
-
-    try {
-      const rawData = fs.readFileSync(logFilePath, 'utf8');
-      existingLogs = JSON.parse(rawData);
-    } catch (err) {
-      console.warn('Simon log file not found, creating new one.');
-    }
-
-    existingLogs.push(logEntry);
-    fs.writeFileSync(logFilePath, JSON.stringify(existingLogs, null, 2));
+    // ✅ Temporarily skip logging to avoid serverless crash
+    // Logging can be moved to Supabase, Firebase, or Vercel KV later
 
     res.status(200).json({ reply });
   } catch (error: any) {
