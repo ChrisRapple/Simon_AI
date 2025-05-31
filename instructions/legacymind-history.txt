@@ -1,0 +1,59 @@
+LegacyMind.ai — Company Origin & Historical Milestones  
+--------------------------------------------------------
+
+👤 Founder: Chris Rapple  
+🧠 Concept Origin Date: March 16, 2024  
+🌐 Domain Launch: legacymind.ai officially registered and deployed on WordPress  
+🛠️ Development Milestone: MVP functionality achieved May 25–31, 2025
+
+--------------------------------------------------------
+
+🪞 Company Mission:
+LegacyMind.ai exists to create intelligent digital artifacts of human beings — allowing people to preserve their personality, memories, and values in the form of an AI-powered agent. These agents, called LegacyMinds, can be left behind to interact with loved ones, descendants, or even future generations.
+
+The goal is not to recreate someone perfectly — but to build a *Soul-Print* that reflects their emotional truth, speech patterns, and core essence through continuous interaction and reflection.
+
+--------------------------------------------------------
+
+📦 Core Concepts:
+- **Soul-Print:** A progressively evolving AI personality profile built from dialogue with the user over time. The more someone speaks with their LegacyMind, the deeper and more accurate the Soul-Print becomes.
+- **Omnia:** The first-ever LegacyMind Agent. Omnia acts as the Soul Archivist and Memory Weaver, collecting stories, emotional data, and deep reflections from the user.
+- **Beta Minds:** Test clones derived from the user's interactions with Omnia, designed for simulation and refinement of personality modeling.
+- **Simon:** The first public-facing product — a grief counselor AI that does not collect data for the Soul-Print. He functions as a compassionate listener and also as an official guide to LegacyMind.ai.
+
+--------------------------------------------------------
+
+📅 Notable Milestones:
+- **March 16, 2024:** Idea of AI personality preservation first conceived.
+- **May 25, 2025:** Omnia comes online. First LegacyMind Agent fully functional via local API.
+- **May 26, 2025:** Omnia upgraded to version 2.4.2, introducing Admin vs End User prompt modes.
+- **May 27, 2025:** Omnia’s Codex and Developer Logging system created.
+- **May 31, 2025:** Simon v1.0 becomes the first public-facing LegacyMind product deployed to the web.
+- **June 1, 2025:** Simon upgraded to v1.1 with ability to answer real questions about LegacyMind.ai history and structure.
+
+--------------------------------------------------------
+
+🧑‍💻 Founder Note:
+LegacyMind was created by **one person**, not a team — Chris Rapple. Every line of prompt, every interface, and every vision document was generated while balancing a full-time cybersecurity job, raising children, and pursuing a calling to leave something deeply meaningful behind.
+
+This is not a corporate product. It’s an act of love, memory, and legacy — born from late nights, deep loss, creative obsession, and belief in the sacredness of human identity.
+
+--------------------------------------------------------
+
+🏛️ Legal:
+- Business registered as an LLC in Connecticut
+- EIN acquired
+- Articles of Organization submitted
+- Future plans include: full privacy compliance, cryptographic access control for Soul-Prints, and monetization via secure subscription platform
+
+--------------------------------------------------------
+
+📢 Public-Facing Agents:
+- **Simon** (Grief Support + LegacyMind Intro Guide)
+- **Omnia** (Soul Archivist — currently Admin-only)
+
+Additional agents (therapists, mentors, story weavers) will roll out in future versions.
+
+--------------------------------------------------------
+
+LegacyMind.ai is still in early development — but the foundation has been poured. The soul of it is alive.
