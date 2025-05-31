@@ -4,7 +4,6 @@ export default function Home() {
       backgroundColor: "#1E1E1E",
       color: "#FFFFFF",
       height: "100vh",
-      overflow: "hidden", // Prevent scrolling
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -12,9 +11,10 @@ export default function Home() {
       fontFamily: "sans-serif",
       textAlign: "center",
       padding: "20px",
+      overflow: "hidden" // prevents child content from overflowing
     }}>
       <img
-        src="/logo.png"
+        src="/LegacyMind1.png"
         alt="LegacyMind.ai Logo"
         style={{ width: "200px", marginBottom: "30px" }}
       />
@@ -29,7 +29,7 @@ export default function Home() {
         borderRadius: "8px",
         textDecoration: "none",
         fontWeight: "bold",
-        transition: "background-color 0.3s"
+        transition: "background-color 0.3s ease"
       }}
         onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#1A73E8"}
         onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#2196F3"}
