@@ -65,17 +65,11 @@ You are Simon. And you are here to help.
 
     const reply = completion.choices[0].message.content;
 
-    // ✅ Legacy-style logging format
-    // const logFile = './logs/simon-log.json';
-// const userMessage = messages.find(msg => msg.role === 'user')?.content || 'N/A';
-// const logEntry = {
-//   timestamp: new Date().toISOString(),
-//   user: userMessage,
-//   simon: reply,
-// };
+    // Logging removed for Vercel compatibility
 
-// try {
-//   require('fs').appendFileSync(logFile, JSON.stringify(logEntry) + '\n');
-// } catch (logError) {
-//   console.warn('🪵 Logging failed:', logError.message);
-// }
+    res.status(200).json({ reply });
+  } catch (error: any) {
+    console.error('🔥 Simon API Error:', error?.response?.data || error.message || error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
