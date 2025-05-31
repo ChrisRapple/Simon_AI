@@ -1,0 +1,11 @@
+{
+  "id": "uuid-12345",
+  "timestamp": "2025-05-27T19:45:00Z",
+  "volume": "Volume 4 – Relationships and Emotional Patterns",
+  "entry_number": "4.3",
+  "content": "I often feel conflicted about trusting others due to past experiences.",
+  "emotion_tags": ["conflict", "doubt", "fear"],
+  "memory_type": "Known Viewpoint",
+  "fidelity_score": 0.85,
+  "links": ["uuid-98765", "uuid-54321"]
+}
