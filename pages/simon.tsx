@@ -24,7 +24,6 @@ const systemPrompt = {
 const baseMessages = messages.length ? messages : [systemPrompt];
 const updatedMessages = [...baseMessages, { role: "user", content: input }];
 
-    const updatedMessages = [...messages, { role: "user", content: input }];
     setMessages(updatedMessages);
     setInput("");
     setLoading(true);
