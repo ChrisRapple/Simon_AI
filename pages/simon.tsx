@@ -38,7 +38,7 @@ const updatedMessages = [...baseMessages, { role: "user", content: input }];
       });
 
       const data = await res.json();
-      const reply = data.choices?.[0]?.message?.content || "Simon didn't respond.";
+      const reply = data.reply || "Simon didn't respond.";
 setMessages([...updatedMessages, { role: "assistant", content: reply }]);
 
     } catch (error) {
