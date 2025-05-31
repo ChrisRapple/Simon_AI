@@ -1,3 +1,5 @@
+// Simon UI lives here - forced build trigger
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
