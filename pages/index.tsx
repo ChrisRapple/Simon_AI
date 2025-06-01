@@ -20,7 +20,7 @@ export default function Home() {
       />
       <h1 style={{ fontSize: "2.5rem", marginBottom: "10px" }}>Welcome to LegacyMind.ai</h1>
       <p style={{ fontSize: "1.2rem", color: "#CCCCCC", marginBottom: "40px" }}>
-        Talk to Simon, your grief companion AI.
+        LegacyMind is a digital preservation company dedicated to capturing the essence of human experience through AI. We create interactive, intelligent avatars that echo the voices, values, and stories of those who matter most—forever.
       </p>
       <a href="/simon" style={{
         backgroundColor: "#2196F3",
