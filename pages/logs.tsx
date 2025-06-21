@@ -1,6 +1,7 @@
 // File: D:\LegacyMindAI\pages\logs.tsx
 import { useEffect, useState } from 'react';
-import AuthGuard from '../components/AuthGuard';
+import AuthGuard from '../components/authguard';
+
 
 interface LogEntry {
   timestamp: string;
