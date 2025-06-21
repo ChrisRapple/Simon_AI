@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+
 interface Message {
   role: 'user' | 'assistant';
   content: string;
@@ -11,6 +12,7 @@ export default function SimonPage() {
   const [loading, setLoading] = useState(false);
 
   const sendMessage = async () => {
+    const userId = 'demo-user-001';
     if (!input.trim()) return;
 
     const newMessages: Message[] = [...messages, { role: 'user' as const, content: input }];
@@ -23,7 +25,7 @@ export default function SimonPage() {
       const res = await fetch('/api/simon', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: newMessages }),
+        body: JSON.stringify({ userId, messages: newMessages }),
       });
 
       const data = await res.json();
