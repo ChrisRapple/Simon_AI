@@ -9,7 +9,25 @@ const openai = new OpenAI({
 
 // Load Simon's system prompt from external file
 const promptPath = path.resolve(process.cwd(), 'instructions', 'simon-prompt.txt');
-const simonSystemPrompt = fs.readFileSync(promptPath, 'utf8');
+// Load Simon's base prompt
+const promptPath = path.resolve(process.cwd(), 'instructions', 'simon-prompt.txt');
+let simonSystemPrompt = fs.readFileSync(promptPath, 'utf8');
+
+// Load user memory
+let userMemory = '';
+if (fs.existsSync(memoryFile)) {
+  const memoryData = JSON.parse(fs.readFileSync(memoryFile, 'utf-8'));
+  userMemory = memoryData[userId] || '';
+}
+
+// Combine prompt with short-term memory
+const fullPrompt = `
+${simonSystemPrompt}
+
+Known memory from this user:
+${userMemory}
+`.trim();
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
