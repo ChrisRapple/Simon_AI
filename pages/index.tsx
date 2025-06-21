@@ -1,4 +1,22 @@
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+
 export default function Home() {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    async function checkSession() {
+      const res = await fetch('/api/session');
+      if (res.ok) {
+        setAuthenticated(true);
+      }
+      setChecked(true);
+    }
+    checkSession();
+  }, []);
+
   return (
     <div style={{
       backgroundColor: "#1E1E1E",
@@ -11,7 +29,7 @@ export default function Home() {
       fontFamily: "sans-serif",
       textAlign: "center",
       padding: "20px",
-      overflow: "hidden" // prevents child content from overflowing
+      overflow: "hidden"
     }}>
       <img
         src="/LegacyMind1.png"
@@ -22,20 +40,38 @@ export default function Home() {
       <p style={{ fontSize: "1.2rem", color: "#CCCCCC", marginBottom: "40px" }}>
         LegacyMind is a digital preservation company dedicated to capturing the essence of human experience through AI. We create interactive, intelligent avatars that echo the voices, values, and stories of those who matter most—forever.
       </p>
-      <a href="/simon" style={{
-        backgroundColor: "#2196F3",
-        color: "#FFFFFF",
-        padding: "12px 24px",
-        borderRadius: "8px",
-        textDecoration: "none",
-        fontWeight: "bold",
-        transition: "background-color 0.3s ease"
-      }}
-        onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#1A73E8"}
-        onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#2196F3"}
-      >
-        Talk to Simon
-      </a>
+
+      {checked && authenticated ? (
+        <a href="/simon" style={{
+          backgroundColor: "#2196F3",
+          color: "#FFFFFF",
+          padding: "12px 24px",
+          borderRadius: "8px",
+          textDecoration: "none",
+          fontWeight: "bold",
+          transition: "background-color 0.3s ease"
+        }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#1A73E8"}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#2196F3"}
+        >
+          Talk to Simon
+        </a>
+      ) : (
+        <a href="/login" style={{
+          backgroundColor: "#4CAF50",
+          color: "#FFFFFF",
+          padding: "12px 24px",
+          borderRadius: "8px",
+          textDecoration: "none",
+          fontWeight: "bold",
+          transition: "background-color 0.3s ease"
+        }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#388E3C"}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#4CAF50"}
+        >
+          Login to Talk to Simon
+        </a>
+      )}
     </div>
   );
 }
