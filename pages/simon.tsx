@@ -13,15 +13,15 @@ export default function SimonPage() {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, loading]);
+  }, [messages]);
 
   const sendMessage = async () => {
     const userId = 'demo-user-001';
     const trimmedInput = input.trim();
     if (!trimmedInput) return;
 
-    const newMessages: Message[] = [...messages, { role: 'user', content: trimmedInput }];
-    setMessages(newMessages);
+    const updatedMessages: Message[] = [...messages, { role: 'user', content: trimmedInput }];
+    setMessages(updatedMessages);
     setInput('');
     setLoading(true);
 
@@ -29,20 +29,24 @@ export default function SimonPage() {
       const res = await fetch('/api/simon', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, messages: newMessages }),
+        body: JSON.stringify({ userId, messages: updatedMessages }),
       });
 
       const data = await res.json();
+
       if (data.reply) {
-        setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
+        setMessages([...updatedMessages, { role: 'assistant', content: data.reply }]);
       } else {
-        throw new Error('No reply received.');
+        throw new Error('No reply field in response.');
       }
     } catch (error) {
       console.error('Error contacting Simon:', error);
       setMessages([
-        ...newMessages,
-        { role: 'assistant', content: '⚠️ Simon is unavailable right now. Please try again later.' },
+        ...updatedMessages,
+        {
+          role: 'assistant',
+          content: '⚠️ Simon is unavailable right now. Please try again later.',
+        },
       ]);
     } finally {
       setLoading(false);
@@ -107,6 +111,7 @@ export default function SimonPage() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
           placeholder="Type your message..."
+          aria-label="Message input"
           style={{
             flex: 1,
             padding: '12px',
