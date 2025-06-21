@@ -1,4 +1,6 @@
 // File: D:\LegacyMindAI\pages\logs.tsx
+// Trigger redeploy: fix casing issue handled
+
 import { useEffect, useState } from 'react';
 import AuthGuard from '../components/authguard';
 
