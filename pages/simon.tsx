@@ -1,5 +1,4 @@
-import { useState } from 'react';
-
+import { useState, useEffect, useRef } from 'react';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -10,13 +9,18 @@ export default function SimonPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, loading]);
 
   const sendMessage = async () => {
     const userId = 'demo-user-001';
-    if (!input.trim()) return;
+    const trimmedInput = input.trim();
+    if (!trimmedInput) return;
 
-    const newMessages: Message[] = [...messages, { role: 'user' as const, content: input }];
-
+    const newMessages: Message[] = [...messages, { role: 'user', content: trimmedInput }];
     setMessages(newMessages);
     setInput('');
     setLoading(true);
@@ -31,9 +35,15 @@ export default function SimonPage() {
       const data = await res.json();
       if (data.reply) {
         setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
+      } else {
+        throw new Error('No reply received.');
       }
     } catch (error) {
-      setMessages([...newMessages, { role: 'assistant', content: '⚠️ Simon is unavailable right now.' }]);
+      console.error('Error contacting Simon:', error);
+      setMessages([
+        ...newMessages,
+        { role: 'assistant', content: '⚠️ Simon is unavailable right now. Please try again later.' },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -83,6 +93,7 @@ export default function SimonPage() {
             Simon is typing...
           </div>
         )}
+        <div ref={bottomRef} />
       </div>
 
       <div style={{
@@ -108,16 +119,18 @@ export default function SimonPage() {
         />
         <button
           onClick={sendMessage}
+          disabled={loading}
           style={{
             backgroundColor: '#2196F3',
             color: '#fff',
             border: 'none',
             borderRadius: '8px',
             padding: '12px 20px',
-            cursor: 'pointer'
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.6 : 1
           }}
         >
-          Send
+          {loading ? 'Sending...' : 'Send'}
         </button>
       </div>
     </div>
