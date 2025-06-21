@@ -8,11 +8,17 @@ export default function Home() {
 
   useEffect(() => {
     async function checkSession() {
-      const res = await fetch('/api/session');
-      if (res.ok) {
-        setAuthenticated(true);
+      try {
+        const res = await fetch('/api/auth/session');
+        const data = await res.json();
+        if (data && Object.keys(data).length > 0) {
+          setAuthenticated(true);
+        }
+      } catch (err) {
+        console.error('Session check failed:', err);
+      } finally {
+        setChecked(true);
       }
-      setChecked(true);
     }
     checkSession();
   }, []);
@@ -38,7 +44,8 @@ export default function Home() {
       />
       <h1 style={{ fontSize: "2.5rem", marginBottom: "10px" }}>Welcome to LegacyMind.ai</h1>
       <p style={{ fontSize: "1.2rem", color: "#CCCCCC", marginBottom: "40px" }}>
-        LegacyMind is a digital preservation company dedicated to capturing the essence of human experience through AI. We create interactive, intelligent avatars that echo the voices, values, and stories of those who matter most—forever.
+        LegacyMind is a digital preservation company dedicated to capturing the essence of human experience through AI.
+        We create interactive, intelligent avatars that echo the voices, values, and stories of those who matter most—forever.
       </p>
 
       {checked && authenticated ? (
@@ -56,8 +63,8 @@ export default function Home() {
         >
           Talk to Simon
         </a>
-      ) : (
-        <a href="/login" style={{
+      ) : checked ? (
+        <a href="/api/auth/signin" style={{
           backgroundColor: "#4CAF50",
           color: "#FFFFFF",
           padding: "12px 24px",
@@ -71,7 +78,7 @@ export default function Home() {
         >
           Login to Talk to Simon
         </a>
-      )}
+      ) : null}
     </div>
   );
 }
