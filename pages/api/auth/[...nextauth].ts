@@ -1,22 +1,25 @@
-// D:\LegacyMindAI\pages\api\auth\[...nextauth].ts
-
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
-      name: "Login",
+      name: "Credentials",
       credentials: {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const user = { id: "1", name: "DemoUser", email: "demo@legacymind.ai" };
+        const user = {
+          id: "1",
+          name: "Chris",
+          username: "admin",
+          password: "test123",
+        };
 
         if (
-          credentials?.username === "demo" &&
-          credentials?.password === "password"
+          credentials?.username === user.username &&
+          credentials?.password === user.password
         ) {
           return user;
         }
@@ -25,13 +28,13 @@ const handler = NextAuth({
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
   },
   pages: {
     signIn: "/auth/signin",
   },
-  secret: process.env.NEXTAUTH_SECRET,
 });
 
 export { handler as GET, handler as POST };
