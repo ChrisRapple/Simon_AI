@@ -1,5 +1,3 @@
-// FULL PATH: pages/api/simon.ts
-
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { OpenAI } from 'openai';
 import fs from 'fs';
@@ -10,7 +8,7 @@ const openai = new OpenAI({
 });
 
 const promptPath = path.resolve(process.cwd(), 'instructions', 'simon-prompt.txt');
-const memoryFile = path.resolve(process.cwd(), 'logs', 'simon-memory.json');
+const memoryFile = path.resolve(process.cwd(), 'logs', 'simon-memory.json'); // Still declared but not used
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -30,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     simonSystemPrompt = fs.readFileSync(promptPath, 'utf8');
   } catch (err) {
     console.error('🛑 Failed to read simon-prompt.txt:', err);
-    return res.status(500).json({ error: 'Failed to load Simon\'s system prompt.' });
+    return res.status(500).json({ error: "Failed to load Simon's system prompt." });
   }
 
   try {
@@ -39,4 +37,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       userMemory = memoryData[userId] || '';
     }
   } catch (err) {
-    console.warn('⚠️ Fa
+    console.warn('⚠️ Failed to read user memory:', err);
+    userMemory = ''; // fallback
+  }
+
+  const fullPrompt = `
+${simonSystemPrompt}
+
+Known memory from this user:
+${userMemory}
+  `.trim();
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o',
+      messages: [
+        { role: 'system', content: fullPrompt },
+        ...messages,
+      ],
+      temperature: 0.8,
+      max_tokens: 1000,
+    });
+
+    const reply = completion.choices?.[0]?.message?.content;
+
+    if (!reply) {
+      console.error('⚠️ No reply from OpenAI:', completion);
+      return res.status(500).json({ error: 'Simon could not generate a response.' });
+    }
+
+    // Memory writing is disabled in Vercel deployment
+    return res.status(200).json({ reply });
+  } catch (error: any) {
+    console.error('🔥 Simon API Error:', error?.response?.data || error.message || error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
