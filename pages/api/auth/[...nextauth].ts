@@ -1,3 +1,5 @@
+// D:\LegacyMindAI\pages\api\auth\[...nextauth].ts
+
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -15,13 +17,18 @@ const handler = NextAuth({
           name: "Chris",
           username: "admin",
           password: "test123",
+          email: "admin@example.com",
         };
 
         if (
           credentials?.username === user.username &&
           credentials?.password === user.password
         ) {
-          return user;
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+          };
         }
 
         return null;
