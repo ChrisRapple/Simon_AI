@@ -1,3 +1,5 @@
+// D:\LegacyMindAI\pages\index.tsx
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -64,7 +66,7 @@ export default function Home() {
           Talk to Simon
         </a>
       ) : checked ? (
-        <a href="/api/auth/signin" style={{
+        <a href="/auth/signin" style={{
           backgroundColor: "#4CAF50",
           color: "#FFFFFF",
           padding: "12px 24px",
